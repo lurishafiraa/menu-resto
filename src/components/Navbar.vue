@@ -1,5 +1,41 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div>
+    <b-navbar toggleable="lg" type="light">
+      <div class="container">
+        <b-navbar-brand href="#">Luri's Cafe</b-navbar-brand>
+
+        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+        <b-collapse id="nav-collapse" is-nav>
+          <b-navbar-nav>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/">Home</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/menu">Menu</router-link>
+            </li>
+          </b-navbar-nav>
+
+          <!-- Right aligned nav items -->
+          <b-navbar-nav class="ml-auto">
+            <li class="nav-item">
+              <router-link class="nav-link" to="/">
+                Keranjang
+                <b-icon-bag></b-icon-bag>
+                <span class="badge badge-success ml-2">{{
+                  updateKeranjang
+                    ? updateKeranjang.length
+                    : jumlah_pesanans.length
+                }}</span>
+              </router-link>
+            </li>
+          </b-navbar-nav>
+        </b-collapse>
+      </div>
+    </b-navbar>
+  </div>
+
+  <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
       <a class="navbar-brand" href="#">Resto</a>
       <button
@@ -28,14 +64,14 @@
             <router-link class="nav-link" to="/">
             Keranjang
             <b-icon-bag></b-icon-bag>
-            <span class="badge badge-success ml-2">{{ jumlah_pesanans.length }}</span>
+            <span class="badge badge-success ml-2">{{ updateKeranjang ? updateKeranjang.length : jumlah_pesanans.length }}</span>
             </router-link>
           </li>
         </ul>
         
       </div>
     </div>
-  </nav>
+  </nav> -->
 </template>
 
 <script>
@@ -45,19 +81,20 @@ export default {
   name: "Navbar",
   data() {
     return {
-      jumlah_pesanans: []
-    }
+      jumlah_pesanans: [],
+    };
   },
+  props: ["updateKeranjang"],
   methods: {
     setJumlah(data) {
-      this.jumlah_pesanans = data
-    }
+      this.jumlah_pesanans = data;
+    },
   },
   mounted() {
     axios
       .get("http://localhost:3000/keranjangs")
       .then((response) => this.setJumlah(response.data))
-      .catch((error) => console.log(error))
+      .catch((error) => console.log(error));
   },
 };
 </script>
